@@ -14,7 +14,6 @@ const app=express()
 //configure exp app
 app.use(express.json());
 app.use(cors());
-
 //connect to DB
 connectToDb();
 
