@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import notesStore from "../stores/notesStore";
 
 function App() {
+  const store=notesStore();
   //state
 
   const [notes, setNotes] = useState(null)
@@ -19,7 +21,7 @@ function App() {
 
   //useEffect
   useEffect(() => {
-    fetchNotes();
+    store.fetchNotes();
   }, [])
 
   //functions
@@ -90,7 +92,7 @@ setUpdateForm({
     <div className="App">
       <h2>NOTES:</h2>
       {
-        notes && notes.map(note => {
+        store.notes && store.notes.map(note => {
           return (
             <div key={note.id}>
               <h3>{note.title}</h3>
