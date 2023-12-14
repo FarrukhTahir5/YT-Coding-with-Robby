@@ -1,22 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import notesStore from "../stores/notesStore";
-import Icon from '@mdi/react';
-import { mdiThumbUpOutline } from '@mdi/js';
-<link rel="stylesheet" href="App.css"/>
 
 function App() {
-  const store=notesStore();
+  const store = notesStore();
+
   //state
 
-  const [notes, setNotes] = useState(null)
+  const [notes, setNotes] = useState(null);
   const [createForm, setCreateForm] = useState({
     title: '',
     body: ''
   });
 
   const [updateForm, setUpdateForm] = useState({
-    id: null,
+    _id: null,
     title: "",
     body: "",
   });
@@ -26,10 +24,6 @@ function App() {
   useEffect(() => {
     store.fetchNotes();
   }, [])
-  const divstyle = {
-    // -webkit-transform: 'scaleX(-1)',
-  transform: 'scaleX(-1)'
-  };
 
   //functions
   const fetchNotes = async () => {
@@ -50,18 +44,17 @@ function App() {
   const createNote = async (e) => {
     e.preventDefault();
 
-    const res = await axios.post("http://localhost:3000/notes", createForm)
-
+    const res = await axios.post("http://localhost:3000/notes", createForm);
     setNotes([...notes, res.data.note])
     console.log(res);
-    setCreateForm({ title: '', body: '' })
+    setCreateForm({ title: "", body: "" });
   };
 
   const deleteNote = async (_id) => {
     //delete note
     const res = await axios.delete(`http://localhost:3000/notes/${_id}`);
     //update state
-    const newNotes = [...notes].filter(note => {
+    const newNotes = [...notes].filter((note) => {
       return note._id !== _id
     })
     setNotes(newNotes);
@@ -74,31 +67,30 @@ function App() {
     });
   }
   const toggleUpdate = (note) => {
-    setUpdateForm({title:note.title,body:note.body,_id:note._id })
+    setUpdateForm({ title: note.title, body: note.body, _id: note._id })
     //set state
   };
 
-  const updateNote=async(e)=>{
+  const updateNote = async (e) => {
     e.preventDefault();
-    const {title,body}=updateForm;
+    const { title, body } = updateForm;
     //upd req
-    const res= await axios.put(`http://localhost:3000/notes/${updateForm._id}`,{title,body})
+    const res = await axios.put(`http://localhost:3000/notes/${updateForm._id}`, { title, body })
     //upd state
-    const newNotes=[...notes]
-    const noteIndex=notes.findIndex((note)=>{
-      return note._id===updateForm._id;
+    const newNotes = [...notes]
+    const noteIndex = notes.findIndex((note) => {
+      return note._id === updateForm._id;
     });
-    newNotes[noteIndex]=res.data.note;
+    newNotes[noteIndex] = res.data.note;
     setNotes(newNotes);
-setUpdateForm({
-  id: null,
-    title: "",
-    body: "",
-})  }
+    setUpdateForm({
+      _id: null,
+      title: "",
+      body: "",
+    })
+  };
   return (
     <div className="App">
-    <Icon path={mdiThumbUpOutline} size={1} className="thumb" style={divstyle}/>
-      
       <h2>NOTES:</h2>
       {
         store.notes && store.notes.map(note => {
@@ -120,19 +112,19 @@ setUpdateForm({
             <button type="submit">Update note</button>
 
           </form>
-        </div>)};
-        {!updateForm._id && (
-          <div>
+        </div>)}
+      {!updateForm._id && (
+        <div>
           <h2>Create Note</h2>
-        <form onSubmit={createNote}>
+          <form onSubmit={createNote}>
 
-          <input onChange={updateCreateFormField} value={createForm.title} name="title" />
-          <textarea onChange={updateCreateFormField} value={createForm.body} name="body" />
-          <button type="submit">Create Note</button>
-        </form>
+            <input onChange={store.updateCreateFormField} value={store.createForm.title} name="title" />
+            <textarea onChange={store.updateCreateFormField} value={store.createForm.body} name="body" />
+            <button type="submit">Create Note</button>
+          </form>
 
-      </div>
-        )}
+        </div>
+      )}
 
 
     </div>
