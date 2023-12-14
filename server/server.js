@@ -18,9 +18,9 @@ app.use(cors());
 connectToDb();
 
 //routing
-app.get('/notes',noteController.fetchNote);
+app.get('/notes',noteController.fetchNotes);
 
-app.get('/notes/:id',noteController.fetchNotes);
+app.get('/notes/:id',noteController.fetchNote);
 
 app.post('/notes',noteController.createNote);
 

@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import notesStore from "../stores/notesStore";
+import Icon from '@mdi/react';
+import { mdiThumbUpOutline } from '@mdi/js';
+<link rel="stylesheet" href="App.css"/>
 
 function App() {
   const store=notesStore();
@@ -23,6 +26,10 @@ function App() {
   useEffect(() => {
     store.fetchNotes();
   }, [])
+  const divstyle = {
+    // -webkit-transform: 'scaleX(-1)',
+  transform: 'scaleX(-1)'
+  };
 
   //functions
   const fetchNotes = async () => {
@@ -90,6 +97,8 @@ setUpdateForm({
 })  }
   return (
     <div className="App">
+    <Icon path={mdiThumbUpOutline} size={1} className="thumb" style={divstyle}/>
+      
       <h2>NOTES:</h2>
       {
         store.notes && store.notes.map(note => {

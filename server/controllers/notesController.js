@@ -1,11 +1,11 @@
 const Note=require("../models/note")
-const fetchNote=async(req,res)=>{
+const fetchNotes=async(req,res)=>{
     //find notes
     const notes=await Note.find();
     //respond to them
     res.json({notes});
 }
-const fetchNotes=async (req,res)=>{
+const fetchNote=async (req,res)=>{
     //get id off url
     const noteId=req.params.id;
 
